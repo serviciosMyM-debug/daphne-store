@@ -1,0 +1,3 @@
+cd $HOME\Desktop
+cd textile-brand
+npm run dev
