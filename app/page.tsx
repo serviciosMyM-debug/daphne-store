@@ -21,26 +21,26 @@ export default function Home() {
   const heroProgress = Math.min(scrollY / 320, 1);
 
   const logoStyle = useMemo(() => {
-  const scale = 1 - heroProgress * 0.62;
-  const translateY = -(heroProgress * 140);
-  const opacity = 1 - heroProgress * 0.12;
+    const scale = 1 - heroProgress * 0.62;
+    const translateY = -(heroProgress * 140);
+    const opacity = 1 - heroProgress * 0.12;
 
-  return {
-    transform: `translateY(${translateY}px) scale(${scale})`,
-    opacity,
-  };
-}, [heroProgress]);
+    return {
+      transform: `translateY(${translateY}px) scale(${scale})`,
+      opacity,
+    };
+  }, [heroProgress]);
 
-const taglineStyle = useMemo(() => {
-  const scale = 1 - heroProgress * 0.25;
-  const translateY = -(heroProgress * 120);
-  const opacity = 1 - heroProgress * 1.3;
+  const taglineStyle = useMemo(() => {
+    const scale = 1 - heroProgress * 0.25;
+    const translateY = -(heroProgress * 120);
+    const opacity = 1 - heroProgress * 1.3;
 
-  return {
-    transform: `translateY(${translateY}px) scale(${scale})`,
-    opacity: opacity < 0 ? 0 : opacity,
-  };
-}, [heroProgress]);
+    return {
+      transform: `translateY(${translateY}px) scale(${scale})`,
+      opacity: opacity < 0 ? 0 : opacity,
+    };
+  }, [heroProgress]);
 
   const filteredProducts = products.filter((product) => {
     const query = searchQuery.trim().toLowerCase();
@@ -70,7 +70,7 @@ const taglineStyle = useMemo(() => {
         <img
           src="https://media.istockphoto.com/id/1451134743/es/foto/torre-eiffel-aislada-sobre-fondo-blanco-par%C3%ADs-francia.jpg?s=612x612&w=0&k=20&c=1VTLbBvOfJlCg0lOqnB8oX3trhnqAPXfh6zT58D8_EE="
           alt="Torre Eiffel"
-          className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.40] mix-blend-multiply md:right-[1%]"
+          className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.12] mix-blend-multiply md:right-[1%]"
         />
 
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#52688f]/35 via-[#27406d]/22 to-[#0A1F44]/70" />
@@ -189,6 +189,19 @@ const taglineStyle = useMemo(() => {
           </div>
         </div>
       </section>
+
+      <footer className="relative z-20 border-t border-[#C9A227]/20 bg-[#0A1F44] px-6 py-5">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 text-center sm:flex-row sm:gap-3">
+          <img
+            src="/serviciosmym-logo.png"
+            alt="ServiciosMyM"
+            className="h-6 w-auto object-contain"
+          />
+          <p className="text-xs tracking-[0.08em] text-[#F5F1E8]/80">
+            Hecho por <span className="font-semibold text-[#C9A227]">ServiciosMyM</span> - Todos los derechos reservados.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }
