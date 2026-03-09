@@ -14,6 +14,10 @@ type ModalConfig = {
   onConfirm: () => void;
 };
 
+const ADMIN_USER = "daphneadmin";
+const ADMIN_PASS = "Daphne2026!";
+const SESSION_KEY = "daphne_admin_logged";
+
 const emptyForm: Omit<Product, "id"> = {
   name: "",
   price: 0,
@@ -39,6 +43,12 @@ export default function AdminPage() {
     deleteCanceledOrders,
   } = useStore();
 
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  const [loginUser, setLoginUser] = useState("");
+  const [loginPass, setLoginPass] = useState("");
+  const [loginError, setLoginError] = useState("");
+
   const [productSearch, setProductSearch] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -56,10 +66,34 @@ export default function AdminPage() {
   });
 
   useEffect(() => {
+    const logged = sessionStorage.getItem(SESSION_KEY) === "true";
+    setIsLogged(logged);
+    setAuthChecked(true);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogin = () => {
+    if (loginUser === ADMIN_USER && loginPass === ADMIN_PASS) {
+      sessionStorage.setItem(SESSION_KEY, "true");
+      setIsLogged(true);
+      setLoginError("");
+      return;
+    }
+
+    setLoginError("Usuario o contraseña incorrectos.");
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem(SESSION_KEY);
+    setIsLogged(false);
+    setLoginUser("");
+    setLoginPass("");
+  };
 
   const closeModal = () => {
     setModal((prev) => ({ ...prev, open: false }));
@@ -291,6 +325,64 @@ export default function AdminPage() {
     setForm(emptyForm);
   };
 
+  if (!authChecked) {
+    return null;
+  }
+
+  if (!isLogged) {
+    return (
+      <main className="min-h-screen bg-[#F5F1E8] px-6 py-10">
+        <div className="mx-auto mt-20 max-w-md rounded-[2rem] border border-[#C9A227]/20 bg-white p-8 shadow-sm">
+          <p className="mb-3 text-xs uppercase tracking-[0.28em] text-[#C9A227]">
+            Acceso restringido
+          </p>
+          <h1 className="mb-6 text-4xl font-bold text-[#0A1F44]">Ingreso admin</h1>
+
+          <div className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[#0A1F44]">
+                Usuario
+              </label>
+              <input
+                type="text"
+                value={loginUser}
+                onChange={(e) => setLoginUser(e.target.value)}
+                className="w-full rounded-xl border border-[#C9A227]/25 px-4 py-3 outline-none"
+                placeholder="Ingresá tu usuario"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[#0A1F44]">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                value={loginPass}
+                onChange={(e) => setLoginPass(e.target.value)}
+                className="w-full rounded-xl border border-[#C9A227]/25 px-4 py-3 outline-none"
+                placeholder="Ingresá tu contraseña"
+              />
+            </div>
+
+            {loginError && (
+              <div className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                {loginError}
+              </div>
+            )}
+
+            <button
+              onClick={handleLogin}
+              className="w-full rounded-xl bg-[#0A1F44] px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-[#102b5f]"
+            >
+              Ingresar
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <>
       <main className="min-h-screen bg-[#F5F1E8]">
@@ -309,7 +401,7 @@ export default function AdminPage() {
               <h1 className="text-2xl font-bold text-white">Control general</h1>
             </div>
 
-            <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.16em]">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em]">
               <a href="#graficas" className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]">
                 Gráficas
               </a>
@@ -322,6 +414,12 @@ export default function AdminPage() {
               <a href="#pedidos" className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]">
                 Pedidos
               </a>
+              <button
+                onClick={handleLogout}
+                className="rounded-full border border-red-400/50 px-4 py-2 text-white transition hover:bg-red-600"
+              >
+                Salir
+              </button>
             </div>
           </div>
         </nav>
