@@ -191,17 +191,31 @@ export default function Home() {
       </section>
 
       <footer className="relative z-20 border-t border-[#C9A227]/20 bg-[#0A1F44] px-6 py-5">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 text-center sm:flex-row sm:gap-3">
-          <img
-            src="/serviciosmym-logo.png"
-            alt="ServiciosMyM"
-            className="h-6 w-auto object-contain"
-          />
-          <p className="text-xs tracking-[0.08em] text-[#F5F1E8]/80">
-            Hecho por <span className="font-semibold text-[#C9A227]">ServiciosMyM</span> - Todos los derechos reservados.
-          </p>
-        </div>
-      </footer>
+  <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 text-center sm:flex-row sm:gap-3">
+
+    <a
+      href="https://serviciosmym.com.ar"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 transition-opacity hover:opacity-80"
+    >
+      <img
+        src="/serviciosmym-logo.png"
+        alt="ServiciosMyM"
+        className="h-7 w-auto object-contain drop-shadow-[0_0_6px_rgba(255,255,255,0.6)] transition-all duration-300 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]"
+      />
+
+      <span className="text-xs tracking-[0.08em] text-[#F5F1E8]/80">
+        Hecho por <span className="font-semibold text-[#C9A227]">ServiciosMyM</span>
+      </span>
+    </a>
+
+    <span className="text-xs text-[#F5F1E8]/50">
+      Todos los derechos reservados.
+    </span>
+
+  </div>
+</footer>
     </main>
   );
 }
