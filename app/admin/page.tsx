@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import SystemModal from "../../components/SystemModal";
-import { Product, useStore, Order } from "../../context/StoreContext";
+import { Product, ProductVariant, useStore, Order } from "../../context/StoreContext";
 
 type ModalConfig = {
   open: boolean;
@@ -24,6 +24,9 @@ const emptyForm: Omit<Product, "id"> = {
   category: "",
   stock: 0,
   image: "",
+  images: [""],
+  colors: [],
+  variants: [{ color: "", size: "", stock: 0 }],
   description: "",
   status: "AGOTADO",
   sizeChart: {},
@@ -254,6 +257,14 @@ export default function AdminPage() {
   }, [orders]);
 
   const handleQuickStockChange = (product: Product, delta: number) => {
+    if (product.variants && product.variants.length > 0) {
+      showInfo(
+        "Edición por variantes",
+        "Este producto maneja stock por talle y color. Editalo desde el formulario para cambiar el stock."
+      );
+      return;
+    }
+
     const newStock = Math.max(product.stock + delta, 0);
     updateProduct(product.id, { stock: newStock });
     showInfo("Stock actualizado", `El stock de ${product.name} quedó en ${newStock}.`);
@@ -273,12 +284,78 @@ export default function AdminPage() {
       category: product.category,
       stock: product.stock,
       image: product.image,
+      images:
+        product.images && product.images.length > 0
+          ? product.images
+          : [product.image],
+      colors: product.colors || [],
+      variants:
+        product.variants && product.variants.length > 0
+          ? product.variants
+          : [{ color: "", size: "", stock: product.stock }],
       description: product.description,
       status: product.status,
       sizeChart: product.sizeChart || {},
       featured: !!product.featured,
     });
     setShowProductForm(true);
+  };
+
+  const updateImageField = (index: number, value: string) => {
+    setForm((prev) => {
+      const nextImages = [...(prev.images || [""])];
+      nextImages[index] = value;
+      return { ...prev, images: nextImages };
+    });
+  };
+
+  const addImageField = () => {
+    setForm((prev) => {
+      const current = prev.images || [""];
+      if (current.length >= 5) return prev;
+      return { ...prev, images: [...current, ""] };
+    });
+  };
+
+  const removeImageField = (index: number) => {
+    setForm((prev) => {
+      const current = prev.images || [""];
+      const filtered = current.filter((_, i) => i !== index);
+      return { ...prev, images: filtered.length > 0 ? filtered : [""] };
+    });
+  };
+
+  const updateVariantField = (
+    index: number,
+    field: keyof ProductVariant,
+    value: string | number
+  ) => {
+    setForm((prev) => {
+      const nextVariants = [...(prev.variants || [])];
+      nextVariants[index] = {
+        ...nextVariants[index],
+        [field]: field === "stock" ? Number(value) : value,
+      };
+      return { ...prev, variants: nextVariants };
+    });
+  };
+
+  const addVariantField = () => {
+    setForm((prev) => ({
+      ...prev,
+      variants: [...(prev.variants || []), { color: "", size: "", stock: 0 }],
+    }));
+  };
+
+  const removeVariantField = (index: number) => {
+    setForm((prev) => {
+      const current = prev.variants || [];
+      const filtered = current.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        variants: filtered.length > 0 ? filtered : [{ color: "", size: "", stock: 0 }],
+      };
+    });
   };
 
   const saveProduct = () => {
@@ -292,20 +369,47 @@ export default function AdminPage() {
       return;
     }
 
-    if (!form.image.trim()) {
-      showInfo("Falta la imagen", "Cargá una URL de imagen para el producto.");
+    const cleanImages = (form.images || [])
+      .map((img) => img.trim())
+      .filter(Boolean)
+      .slice(0, 5);
+
+    if (cleanImages.length === 0) {
+      showInfo("Falta la imagen", "Cargá al menos una URL de imagen para el producto.");
       return;
     }
+
+    const cleanVariants = (form.variants || [])
+      .map((variant) => ({
+        color: variant.color.trim(),
+        size: variant.size.trim(),
+        stock: Number(variant.stock) || 0,
+      }))
+      .filter((variant) => variant.color && variant.size);
+
+    if (cleanVariants.length === 0) {
+      showInfo(
+        "Faltan variantes",
+        "Cargá al menos una variante con color, talle y stock."
+      );
+      return;
+    }
+
+    const uniqueColors = Array.from(new Set(cleanVariants.map((v) => v.color)));
+    const totalStock = cleanVariants.reduce((acc, variant) => acc + variant.stock, 0);
 
     const productData: Omit<Product, "id"> = {
       ...form,
       name: form.name.trim().toUpperCase(),
       category: form.category.trim(),
-      image: form.image.trim(),
+      image: cleanImages[0],
+      images: cleanImages,
+      colors: uniqueColors,
+      variants: cleanVariants,
       description: form.description.trim(),
       price: Number(form.price),
-      stock: Number(form.stock),
-      status: Number(form.stock) > 0 ? "EN STOCK" : "AGOTADO",
+      stock: totalStock,
+      status: totalStock > 0 ? "EN STOCK" : "AGOTADO",
       featured: !!form.featured,
     };
 
@@ -402,16 +506,28 @@ export default function AdminPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em]">
-              <a href="#graficas" className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]">
+              <a
+                href="#graficas"
+                className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]"
+              >
                 Gráficas
               </a>
-              <a href="#stock-bajo" className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]">
+              <a
+                href="#stock-bajo"
+                className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]"
+              >
                 Stock bajo
               </a>
-              <a href="#listado-productos" className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]">
+              <a
+                href="#listado-productos"
+                className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]"
+              >
                 Productos
               </a>
-              <a href="#pedidos" className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]">
+              <a
+                href="#pedidos"
+                className="rounded-full border border-white/15 px-4 py-2 text-white transition hover:border-[#C9A227] hover:text-[#C9A227]"
+              >
                 Pedidos
               </a>
               <button
@@ -427,7 +543,11 @@ export default function AdminPage() {
         <div className="mx-auto max-w-7xl px-6 py-8">
           <section id="graficas" className="scroll-mt-28">
             <div className="mb-8 grid gap-6 md:grid-cols-4 xl:grid-cols-4">
-              <MetricCard title="Ventas totales" value={`$ ${totalValue.toLocaleString()}`} subtitle="Facturación acumulada" />
+              <MetricCard
+                title="Ventas totales"
+                value={`$ ${totalValue.toLocaleString()}`}
+                subtitle="Facturación acumulada"
+              />
               <MetricCard title="Pedidos" value={String(orders.length)} subtitle="Cantidad total" />
               <MetricCard title="Clientes" value={String(customerCount)} subtitle="Base registrada" />
               <MetricCard title="Pendientes" value={String(pendingCount)} subtitle="Requieren atención" />
@@ -443,7 +563,10 @@ export default function AdminPage() {
 
                 <div className="flex h-[320px] items-end gap-4 rounded-2xl bg-[#F5F1E8] p-5">
                   {salesByMonth.map((month) => (
-                    <div key={month.label} className="flex flex-1 flex-col items-center justify-end gap-3">
+                    <div
+                      key={month.label}
+                      className="flex flex-1 flex-col items-center justify-end gap-3"
+                    >
                       <div
                         className="w-full rounded-t-3xl bg-[#D9D1B8] transition-all"
                         style={{
@@ -468,7 +591,10 @@ export default function AdminPage() {
                         { name: "Sin datos", qty: 1 },
                       ]
                   ).map((item, index) => (
-                    <div key={`${item.name}-${index}`} className="flex flex-1 flex-col items-center justify-end gap-3">
+                    <div
+                      key={`${item.name}-${index}`}
+                      className="flex flex-1 flex-col items-center justify-end gap-3"
+                    >
                       <div
                         className="w-full rounded-t-xl bg-[#0A1F44]"
                         style={{
@@ -566,7 +692,9 @@ export default function AdminPage() {
                     type="text"
                     placeholder="Nombre del producto"
                     value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value.toUpperCase() })}
+                    onChange={(e) =>
+                      setForm({ ...form, name: e.target.value.toUpperCase() })
+                    }
                     className="rounded border px-4 py-3"
                   />
 
@@ -588,19 +716,54 @@ export default function AdminPage() {
 
                   <input
                     type="number"
-                    placeholder="Stock"
-                    value={form.stock}
-                    onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
-                    className="rounded border px-4 py-3"
+                    placeholder="Stock total calculado automáticamente"
+                    value={(form.variants || []).reduce(
+                      (acc, variant) => acc + (Number(variant.stock) || 0),
+                      0
+                    )}
+                    disabled
+                    className="rounded border bg-gray-100 px-4 py-3 text-gray-500"
                   />
 
-                  <input
-                    type="text"
-                    placeholder="URL de la imagen"
-                    value={form.image}
-                    onChange={(e) => setForm({ ...form, image: e.target.value })}
-                    className="rounded border px-4 py-3 md:col-span-2"
-                  />
+                  <div className="md:col-span-2">
+                    <label className="mb-2 block text-sm font-semibold text-[#0A1F44]">
+                      Imágenes del producto (hasta 5)
+                    </label>
+
+                    <div className="space-y-3">
+                      {(form.images || [""]).map((img, index) => (
+                        <div key={index} className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder={`URL de imagen ${index + 1}`}
+                            value={img}
+                            onChange={(e) => updateImageField(index, e.target.value)}
+                            className="flex-1 rounded border px-4 py-3"
+                          />
+
+                          {(form.images?.length || 0) > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeImageField(index)}
+                              className="rounded bg-red-600 px-4 py-3 text-sm font-bold text-white hover:bg-red-700"
+                            >
+                              X
+                            </button>
+                          )}
+                        </div>
+                      ))}
+
+                      {(form.images?.length || 0) < 5 && (
+                        <button
+                          type="button"
+                          onClick={addImageField}
+                          className="rounded bg-[#C9A227] px-4 py-2 text-sm font-bold text-[#0A1F44] hover:opacity-90"
+                        >
+                          + Agregar imagen
+                        </button>
+                      )}
+                    </div>
+                  </div>
 
                   <textarea
                     placeholder="Descripción"
@@ -608,6 +771,94 @@ export default function AdminPage() {
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     className="min-h-[120px] rounded border px-4 py-3 md:col-span-2"
                   />
+
+                  <div className="md:col-span-2">
+                    <label className="mb-3 block text-sm font-semibold text-[#0A1F44]">
+                      Variantes por color, talle y stock
+                    </label>
+
+                    <div className="space-y-3">
+                      {(form.variants || []).map((variant, index) => (
+                        <div
+                          key={index}
+                          className="grid gap-3 rounded-xl border border-[#C9A227]/20 p-4 md:grid-cols-[1fr_1fr_140px_80px]"
+                        >
+                          <input
+                            type="text"
+                            placeholder="Color"
+                            value={variant.color}
+                            onChange={(e) =>
+                              updateVariantField(index, "color", e.target.value)
+                            }
+                            className="rounded border px-4 py-3"
+                          />
+
+                          <input
+                            type="text"
+                            placeholder="Talle"
+                            value={variant.size}
+                            onChange={(e) =>
+                              updateVariantField(index, "size", e.target.value.toUpperCase())
+                            }
+                            className="rounded border px-4 py-3"
+                          />
+
+                          <input
+                            type="number"
+                            placeholder="Stock"
+                            value={variant.stock}
+                            onChange={(e) =>
+                              updateVariantField(index, "stock", Number(e.target.value))
+                            }
+                            className="rounded border px-4 py-3"
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => removeVariantField(index)}
+                            className="rounded bg-red-600 px-4 py-3 text-sm font-bold text-white hover:bg-red-700"
+                          >
+                            X
+                          </button>
+                        </div>
+                      ))}
+
+                      <button
+                        type="button"
+                        onClick={addVariantField}
+                        className="rounded bg-[#C9A227] px-4 py-2 text-sm font-bold text-[#0A1F44] hover:opacity-90"
+                      >
+                        + Agregar variante
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="mb-2 block text-sm font-semibold text-[#0A1F44]">
+                      Tabla de talles (opcional)
+                    </label>
+                    <textarea
+                      placeholder='Ejemplo:
+S: 50cm / 70cm
+M: 53cm / 72cm
+L: 56cm / 75cm'
+                      value={Object.entries(form.sizeChart || {})
+                        .map(([size, measure]) => `${size}: ${measure}`)
+                        .join("\n")}
+                      onChange={(e) => {
+                        const lines = e.target.value.split("\n");
+                        const parsed: Record<string, string> = {};
+                        lines.forEach((line) => {
+                          const [size, ...rest] = line.split(":");
+                          if (size?.trim() && rest.length > 0) {
+                            parsed[size.trim().toUpperCase()] = rest.join(":").trim();
+                          }
+                        });
+                        setForm({ ...form, sizeChart: parsed });
+                      }}
+                      className="min-h-[120px] rounded border px-4 py-3 md:col-span-2"
+                    />
+                  </div>
 
                   <label className="flex items-center gap-3 text-sm font-semibold text-[#0A1F44] md:col-span-2">
                     <input
@@ -824,6 +1075,7 @@ export default function AdminPage() {
                           <tr className="border-b text-left">
                             <th className="py-2 pr-4">Producto</th>
                             <th className="py-2 pr-4">Talle</th>
+                            <th className="py-2 pr-4">Color</th>
                             <th className="py-2 pr-4">Cantidad</th>
                             <th className="py-2 pr-4">Precio</th>
                             <th className="py-2 pr-4">Subtotal</th>
@@ -834,6 +1086,7 @@ export default function AdminPage() {
                             <tr key={`${order.id}-${item.id}-${idx}`} className="border-b">
                               <td className="py-2 pr-4">{item.name}</td>
                               <td className="py-2 pr-4">{item.selectedSize || "-"}</td>
+                              <td className="py-2 pr-4">{item.selectedColor || "-"}</td>
                               <td className="py-2 pr-4">{item.qty}</td>
                               <td className="py-2 pr-4">${item.price.toLocaleString()}</td>
                               <td className="py-2 pr-4">

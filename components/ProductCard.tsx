@@ -15,10 +15,10 @@ export default function ProductCard({ product }: { product: Product }) {
         <button onClick={() => setOpen(true)} className="block w-full text-left">
           <div className="relative aspect-[3/4] overflow-hidden">
             <img
-              src={product.image}
-              alt={product.name}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+  src={product.images?.[0] || product.image}
+  alt={product.name}
+  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+/>
 
             {/* Overlay AGOTADO */}
             {product.status === "AGOTADO" && (

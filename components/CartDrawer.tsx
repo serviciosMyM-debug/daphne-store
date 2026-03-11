@@ -63,7 +63,10 @@ export default function CartDrawer() {
               <p className="mt-10 text-center text-gray-500">Tu carrito está vacío.</p>
             ) : (
               cart.map((item, index) => (
-                <div key={`${item.id}-${item.selectedSize || "sin-talle"}-${index}`} className="flex gap-4">
+                <div
+  key={`${item.id}-${item.selectedSize || "sin-talle"}-${item.selectedColor || "sin-color"}-${index}`}
+  className="flex gap-4"
+>
                   <img
                     src={item.image}
                     alt={item.name}
@@ -79,26 +82,31 @@ export default function CartDrawer() {
                         Talle: {item.selectedSize}
                       </p>
                     )}
+                    {item.selectedColor && (
+  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[#0A1F44]/70">
+    Color: {item.selectedColor}
+  </p>
+)}
 
                     <p className="text-[#C9A227]">${item.price.toLocaleString()}</p>
 
                     <div className="mt-3 flex items-center gap-3">
                       <button
-                        onClick={() => updateQty(item.id, -1, item.selectedSize)}
+                        onClick={() => updateQty(item.id, -1, item.selectedSize, item.selectedColor)}
                         className="rounded border px-2 py-1"
                       >
                         -
                       </button>
                       <span className="min-w-6 text-center font-semibold">{item.qty}</span>
                       <button
-                        onClick={() => updateQty(item.id, 1, item.selectedSize)}
+                        onClick={() => updateQty(item.id, 1, item.selectedSize, item.selectedColor)}
                         className="rounded border px-2 py-1"
                       >
                         +
                       </button>
 
                       <button
-                        onClick={() => removeFromCart(item.id, item.selectedSize)}
+                        onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor)}
                         className="ml-auto text-red-500 hover:text-red-700"
                       >
                         <Trash2 size={16} />
