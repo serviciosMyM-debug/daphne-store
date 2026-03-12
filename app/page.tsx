@@ -70,7 +70,7 @@ export default function Home() {
         <img
           src="https://media.istockphoto.com/id/1451134743/es/foto/torre-eiffel-aislada-sobre-fondo-blanco-par%C3%ADs-francia.jpg?s=612x612&w=0&k=20&c=1VTLbBvOfJlCg0lOqnB8oX3trhnqAPXfh6zT58D8_EE="
           alt="Torre Eiffel"
-          className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.12] mix-blend-multiply md:right-[1%]"
+          className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.40] mix-blend-multiply md:right-[1%]"
         />
 
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#52688f]/35 via-[#27406d]/22 to-[#0A1F44]/70" />
