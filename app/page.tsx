@@ -88,12 +88,18 @@ export default function Home() {
             }}
           />
 
-          <p
-            className="mt-8 max-w-3xl font-[var(--font-playfair)] text-2xl italic leading-relaxed text-[#F5F1E8] transition-transform duration-150 ease-out md:text-3xl lg:text-4xl"
-            style={taglineStyle}
-          >
-            Tu outfit es una extensión de ti, reflejando identidad, estilo y presencia.
-          </p>
+          <div
+  className="mt-8 flex flex-col items-center transition-transform duration-150 ease-out"
+  style={taglineStyle}
+>
+  <h2 className="signature-font text-center text-5xl leading-tight text-[#F5F1E8] md:text-6xl lg:text-7xl">
+    Tu outfit es una extensión de ti
+  </h2>
+
+  <p className="mt-3 text-center text-sm font-semibold uppercase tracking-[0.28em] text-[#F5F1E8] md:text-base">
+    Reflejando identidad, estilo y presencia
+  </p>
+</div>
         </div>
       </section>
 
