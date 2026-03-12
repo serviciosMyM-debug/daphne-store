@@ -68,7 +68,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[#0A1F44]" />
 
         <img
-          src="https://media.istockphoto.com/id/1451134743/es/foto/torre-eiffel-aislada-sobre-fondo-blanco-par%C3%ADs-francia.jpg?s=612x612&w=0&k=20&c=1VTLbBvOfJlCg0lOqnB8oX3trhnqAPXfh6zT58D8_EE="
+          src="https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphne%20indumentaria/Torre%20Eiffiel.png"
           alt="Torre Eiffel"
           className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.80] mix-blend-multiply md:right-[1%]"
         />
