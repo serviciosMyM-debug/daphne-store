@@ -70,7 +70,7 @@ export default function Home() {
         <img
           src="https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphne%20indumentaria/Torre%20Eiffiel.png"
           alt="Torre Eiffel"
-          className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.80] mix-blend-multiply md:right-[1%]"
+          className="pointer-events-none fixed right-[-2%] top-0 z-0 h-screen w-auto max-w-none opacity-[0.99] mix-blend-multiply md:right-[1%]"
         />
 
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#52688f]/35 via-[#27406d]/22 to-[#0A1F44]/70" />
