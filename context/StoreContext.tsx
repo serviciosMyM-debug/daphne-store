@@ -85,99 +85,151 @@ interface StoreContextType {
   setSearchQuery: (query: string) => void;
 }
 
+const PRODUCT_VERSION = "daphne-catalog-v4";
+
+const baseSizeChart = {
+  S: "50cm ancho / 70cm largo",
+  M: "53cm ancho / 72cm largo",
+  L: "56cm ancho / 75cm largo",
+};
+
 const initialProducts: Product[] = [
   {
     id: 1,
-    name: "CAMISA DE LINO NAVY",
-    price: 12000,
-    category: "Camisas",
-    stock: 6,
+    name: "STRAPLESS BAKER",
+    price: 16200,
+    category: "TOP",
+    stock: 12,
     image:
-      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2305.JPG.jpeg",
     images: [
-      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2305.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2312.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2298.JPG.jpeg",
     ],
-    colors: ["Azul", "Blanco"],
+    colors: ["Blanco", "Negro"],
     variants: [
-      { color: "Azul", size: "S", stock: 2 },
-      { color: "Azul", size: "M", stock: 1 },
-      { color: "Azul", size: "L", stock: 1 },
-      { color: "Blanco", size: "S", stock: 1 },
-      { color: "Blanco", size: "M", stock: 1 },
-      { color: "Blanco", size: "L", stock: 0 },
+      { color: "Blanco", size: "S", stock: 2 },
+      { color: "Blanco", size: "M", stock: 2 },
+      { color: "Blanco", size: "L", stock: 2 },
+      { color: "Negro", size: "S", stock: 2 },
+      { color: "Negro", size: "M", stock: 2 },
+      { color: "Negro", size: "L", stock: 2 },
     ],
-    description: "Lino 100% importado, corte slim fit.",
+    description:
+      "Top strapless de diseño minimalista que realza la silueta con un calce cómodo y elegante. Una prenda versátil ideal para combinar con pantalones de lino, sastretos o jeans para un look moderno y sofisticado.",
     status: "EN STOCK",
     featured: true,
-    sizeChart: { S: "50cm / 70cm", M: "53cm / 72cm", L: "56cm / 75cm" },
+    sizeChart: baseSizeChart,
   },
   {
     id: 2,
-    name: "PANTALÓN TROUSER CREMA",
-    price: 18500,
+    name: "SASTRERO DRIES LINO",
+    price: 29990,
     category: "Pantalones",
-    stock: 5,
+    stock: 12,
     image:
-      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2258.JPG.jpeg",
     images: [
-      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2258.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2231.jpg.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2284.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2290.JPG.jpeg",
     ],
-    colors: ["Crema"],
+    colors: ["Beige", "Negro"],
     variants: [
-      { color: "Crema", size: "S", stock: 2 },
-      { color: "Crema", size: "M", stock: 2 },
-      { color: "Crema", size: "L", stock: 1 },
+      { color: "Beige", size: "S", stock: 2 },
+      { color: "Beige", size: "M", stock: 2 },
+      { color: "Beige", size: "L", stock: 2 },
+      { color: "Negro", size: "S", stock: 2 },
+      { color: "Negro", size: "M", stock: 2 },
+      { color: "Negro", size: "L", stock: 2 },
     ],
-    description: "Tela fluida con caída perfecta.",
+    description:
+      "Pantalón de lino de tiro alto y pierna amplia que brinda comodidad y elegancia. Su tono natural lo convierte en una pieza esencial para looks frescos y atemporales.",
     status: "EN STOCK",
     featured: true,
-    sizeChart: { S: "40cm", M: "42cm", L: "44cm" },
+    sizeChart: baseSizeChart,
   },
   {
     id: 3,
-    name: "BLAZER ESTRUCTURADO",
-    price: 35000,
-    category: "Abrigos",
-    stock: 0,
+    name: "CAMISA CROP HENRY",
+    price: 21800,
+    category: "Camisas",
+    stock: 6,
     image:
-      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2353.JPG.jpeg",
     images: [
-      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2353.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2371.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2357.JPG.jpeg",
     ],
-    colors: ["Negro"],
+    colors: ["Blanco"],
     variants: [
-      { color: "Negro", size: "S", stock: 0 },
-      { color: "Negro", size: "M", stock: 0 },
-      { color: "Negro", size: "L", stock: 0 },
+      { color: "Blanco", size: "S", stock: 2 },
+      { color: "Blanco", size: "M", stock: 2 },
+      { color: "Blanco", size: "L", stock: 2 },
     ],
-    description: "Elegancia atemporal para el trabajo.",
-    status: "AGOTADO",
-    featured: false,
-    sizeChart: { S: "90cm", M: "94cm", L: "98cm" },
+    description:
+      "Camisa cropped de corte relajado que combina lo clásico con un estilo contemporáneo. Ideal para usar abierta o cerrada, creando looks versátiles y modernos.",
+    status: "EN STOCK",
+    featured: true,
+    sizeChart: baseSizeChart,
   },
   {
     id: 4,
-    name: "VESTIDO DE NOCHE",
-    price: 28000,
-    category: "Vestidos",
-    stock: 3,
+    name: "CAMISA CROP DION",
+    price: 21800,
+    category: "Camisas",
+    stock: 6,
     image:
-      "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2325.JPG.jpeg",
     images: [
-      "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=800",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2325.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2273.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2323.JPG.jpeg",
     ],
-    colors: ["Negro"],
+    colors: ["Beige"],
     variants: [
-      { color: "Negro", size: "S", stock: 1 },
-      { color: "Negro", size: "M", stock: 1 },
-      { color: "Negro", size: "L", stock: 1 },
+      { color: "Beige", size: "S", stock: 2 },
+      { color: "Beige", size: "M", stock: 2 },
+      { color: "Beige", size: "L", stock: 2 },
     ],
-    description: "Seda natural con detalles dorados.",
+    description:
+      "Camisa cropped con delicadas rayas verticales que aportan un estilo natural y elegante. Perfecta para combinar con prendas de lino o pantalones de corte amplio para un look fresco y moderno.",
     status: "EN STOCK",
     featured: true,
-    sizeChart: { S: "85cm", M: "88cm", L: "91cm" },
+    sizeChart: baseSizeChart,
+  },
+  {
+    id: 5,
+    name: "CHALECO DAZE",
+    price: 19990,
+    category: "Chalecos",
+    stock: 12,
+    image:
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2200.JPG.jpeg",
+    images: [
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2200.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2207.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2224.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2379.JPG.jpeg",
+      "https://raw.githubusercontent.com/serviciosMyM-debug/daphne-store/refs/heads/main/Daphn%C3%A9%20indumentaria/IMG_2400.JPG.jpeg",
+    ],
+    colors: ["Negro", "Blanco"],
+    variants: [
+      { color: "Negro", size: "S", stock: 2 },
+      { color: "Negro", size: "M", stock: 2 },
+      { color: "Negro", size: "L", stock: 2 },
+      { color: "Blanco", size: "S", stock: 2 },
+      { color: "Blanco", size: "M", stock: 2 },
+      { color: "Blanco", size: "L", stock: 2 },
+    ],
+    description:
+      "Chaleco halter con botones frontales y escote en V que aporta un estilo elegante y femenino. Perfecto para elevar cualquier outfit, combinando sofisticación y frescura en una sola prenda.",
+    status: "EN STOCK",
+    featured: true,
+    sizeChart: baseSizeChart,
   },
 ];
 
@@ -193,7 +245,7 @@ const normalizeProduct = (product: Product): Product => {
 
   const variants = (product.variants || []).map((variant) => ({
     color: variant.color?.trim() || "",
-    size: variant.size?.trim() || "",
+    size: variant.size?.trim().toUpperCase() || "",
     stock: Number(variant.stock) || 0,
   }));
 
@@ -226,7 +278,16 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const [customerName, setCustomerName] = useState("");
 
   useEffect(() => {
+    const savedVersion = localStorage.getItem("products_version");
+
+    if (savedVersion !== PRODUCT_VERSION) {
+      localStorage.removeItem("products");
+      localStorage.removeItem("orders");
+      localStorage.setItem("products_version", PRODUCT_VERSION);
+    }
+
     const savedProducts = localStorage.getItem("products");
+
     if (savedProducts) {
       try {
         const parsedProducts = JSON.parse(savedProducts) as Product[];
@@ -241,10 +302,14 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch {
         localStorage.removeItem("products");
-        setProducts(initialProducts.map(normalizeProduct));
+        const initialNormalized = initialProducts.map(normalizeProduct);
+        localStorage.setItem("products", JSON.stringify(initialNormalized));
+        setProducts(initialNormalized);
       }
     } else {
-      setProducts(initialProducts.map(normalizeProduct));
+      const initialNormalized = initialProducts.map(normalizeProduct);
+      localStorage.setItem("products", JSON.stringify(initialNormalized));
+      setProducts(initialNormalized);
     }
 
     const savedOrders = localStorage.getItem("orders");
@@ -388,7 +453,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       id: `ORD-${Date.now()}`,
       customerName: customerName.trim(),
       customerEmail: "",
-      customerPhone: "5493476552545",
+      customerPhone: "5493416230111",
       items: cart,
       total: cartTotal,
       status: "Pendiente",
