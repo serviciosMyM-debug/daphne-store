@@ -16,6 +16,8 @@ export default function ProductCard({ product }: { product: Product }) {
     return proxiedImage(product.images?.[0] || product.image);
   }, [product.images, product.image]);
 
+  console.log("IMG SRC:", mainImage);
+
   return (
     <>
       <div className="group overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
