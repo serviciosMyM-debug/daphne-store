@@ -21,36 +21,36 @@ async function updateProductImages(slug: string, urls: string[]) {
 
 async function main() {
   await updateProductImages("strapless-baker", [
-    "/products/IMG-2305-JPG.jpeg",
-    "/products/IMG-2312-JPG.jpeg",
-    "/products/IMG-2298-JPG.jpeg",
+    "/products/IMG_2305.JPG",
+    "/products/IMG_2312.JPG",
+    "/products/IMG_2298.JPG",
   ]);
 
   await updateProductImages("sastrero-dries-lino", [
-    "/products/IMG-2258-JPG.jpeg",
-    "/products/IMG-2231-jpg.jpeg",
-    "/products/IMG-2284-JPG.jpeg",
-    "/products/IMG-2298-JPG.jpeg",
+    "/products/IMG_2258.JPG",
+    "/products/IMG_2231.jpg",
+    "/products/IMG_2284.JPG",
+    "/products/IMG_2298.JPG",
   ]);
 
   await updateProductImages("camisa-crop-henry", [
-    "/products/IMG-2353-JPG.jpeg",
-    "/products/IMG-2371-JPG.jpeg",
-    "/products/IMG-2357-JPG.jpeg",
+    "/products/IMG_2353.JPG",
+    "/products/IMG_2371.JPG",
+    "/products/IMG_2357.JPG",
   ]);
 
   await updateProductImages("camisa-crop-dion", [
-    "/products/IMG-2325-JPG.jpeg",
-    "/products/IMG-2273-JPG.jpeg",
-    "/products/IMG-2323-JPG.jpeg",
+    "/products/IMG_2325.JPG",
+    "/products/IMG_2273.JPG",
+    "/products/IMG_2323.JPG",
   ]);
 
   await updateProductImages("chaleco-daze", [
-    "/products/IMG-2200-JPG.jpeg",
-    "/products/IMG-2207-JPG.jpeg",
-    "/products/IMG-2224-JPG.jpeg",
-    "/products/IMG-2379-JPG.jpeg",
-    "/products/IMG-2400-JPG.jpeg",
+    "/products/IMG_2200.JPG",
+    "/products/IMG_2207.JPG",
+    "/products/IMG_2224.JPG",
+    "/products/IMG_2379.JPG",
+    "/products/IMG_2400.JPG",
   ]);
 
   console.log("Todas las imágenes fueron actualizadas.");
