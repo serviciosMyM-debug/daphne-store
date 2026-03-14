@@ -1,54 +1,66 @@
-import { NextRequest } from "next/server";
+"use client";
 
-const ALLOWED_HOSTS = new Set([
-  "i.ibb.co",
-]);
+import { useState } from "react";
+import { Product } from "../context/StoreContext";
+import ProductModal from "./ProductModal";
 
-export async function GET(req: NextRequest) {
-  try {
-    const imageUrl = req.nextUrl.searchParams.get("url");
+function proxiedImage(url?: string) {
+  if (!url) return "/placeholder-product.jpg";
+  return `/api/image?url=${encodeURIComponent(url)}`;
+}
 
-    if (!imageUrl) {
-      return new Response("Missing url", { status: 400 });
-    }
+export default function ProductCard({ product }: { product: Product }) {
+  const [open, setOpen] = useState(false);
 
-    let parsedUrl: URL;
+  const mainImage = proxiedImage(product.images?.[0] || product.image);
 
-    try {
-      parsedUrl = new URL(imageUrl);
-    } catch {
-      return new Response("Invalid url", { status: 400 });
-    }
+  return (
+    <>
+      <div className="group overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <button onClick={() => setOpen(true)} className="block w-full text-left">
+          <div className="relative aspect-[3/4] overflow-hidden bg-[#F5F1E8]">
+            <img
+              src={mainImage}
+              alt={product.name}
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder-product.jpg";
+              }}
+            />
 
-    if (!ALLOWED_HOSTS.has(parsedUrl.hostname)) {
-      return new Response("Host not allowed", { status: 403 });
-    }
+            {product.status === "AGOTADO" && (
+              <div className="absolute inset-0 flex items-center justify-center bg-[#0A1F44]/65">
+                <span className="border border-[#F5F1E8] px-4 py-2 text-sm font-semibold tracking-widest text-[#F5F1E8]">
+                  AGOTADO
+                </span>
+              </div>
+            )}
+          </div>
+        </button>
 
-    const upstream = await fetch(parsedUrl.toString(), {
-      cache: "no-store",
-      headers: {
-        "User-Agent": "Mozilla/5.0",
-      },
-    });
+        <div className="p-6 text-center">
+          <h3 className="mb-3 text-lg font-black uppercase tracking-[0.06em] text-[#0A1F44]">
+            {product.name}
+          </h3>
 
-    if (!upstream.ok) {
-      return new Response("Upstream image not found", { status: upstream.status });
-    }
+          <p className="mb-5 text-2xl font-bold text-[#C9A227]">
+            ${product.price.toLocaleString()}
+          </p>
 
-    const contentType =
-      upstream.headers.get("content-type") || "image/jpeg";
+          <button
+            onClick={() => setOpen(true)}
+            className="w-full border border-[#0A1F44] py-3 text-xs font-bold uppercase tracking-[0.18em] text-[#0A1F44] transition hover:bg-[#0A1F44] hover:text-[#F5F1E8]"
+          >
+            Ver detalle
+          </button>
+        </div>
+      </div>
 
-    const buffer = await upstream.arrayBuffer();
-
-    return new Response(buffer, {
-      status: 200,
-      headers: {
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=86400, s-maxage=86400",
-      },
-    });
-  } catch (error) {
-    console.error("Image proxy error:", error);
-    return new Response("Internal server error", { status: 500 });
-  }
+      <ProductModal
+        product={open ? product : null}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
 }
