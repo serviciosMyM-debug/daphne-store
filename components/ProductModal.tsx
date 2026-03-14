@@ -25,7 +25,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     if (product.images && product.images.length > 0) {
       return product.images.slice(0, 5);
     }
-    return [product.image];
+    return product.image ? [product.image] : ["/placeholder-product.jpg"];
   }, [product]);
 
   const availableColors = useMemo(() => product?.colors || [], [product]);
@@ -190,9 +190,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 <div className="bg-[#F5F1E8]">
                   <div className="relative">
                     <img
-                      src={gallery[currentImage]}
+                      src={gallery[currentImage] || "/placeholder-product.jpg"}
                       alt={`${product.name} ${currentImage + 1}`}
                       className="h-[420px] w-full object-cover sm:h-[520px] lg:h-[760px]"
+                      referrerPolicy="no-referrer"
                     />
 
                     {gallery.length > 1 && (
@@ -227,9 +228,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                           }`}
                         >
                           <img
-                            src={img}
+                            src={img || "/placeholder-product.jpg"}
                             alt={`${product.name} miniatura ${index + 1}`}
                             className="h-20 w-16 object-cover"
+                            referrerPolicy="no-referrer"
                           />
                         </button>
                       ))}
