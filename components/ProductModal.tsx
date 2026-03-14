@@ -11,6 +11,11 @@ interface ProductModalProps {
   onClose: () => void;
 }
 
+function proxiedImage(url?: string) {
+  if (!url) return "/placeholder-product.jpg";
+  return `/api/image?url=${encodeURIComponent(url)}`;
+}
+
 export default function ProductModal({ product, onClose }: ProductModalProps) {
   const { addToCart } = useStore();
   const [mounted, setMounted] = useState(false);
@@ -190,10 +195,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 <div className="bg-[#F5F1E8]">
                   <div className="relative">
                     <img
-                      src={gallery[currentImage] || "/placeholder-product.jpg"}
+                      src={proxiedImage(gallery[currentImage])}
                       alt={`${product.name} ${currentImage + 1}`}
                       className="h-[420px] w-full object-cover sm:h-[520px] lg:h-[760px]"
-                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.src = "/placeholder-product.jpg";
+                      }}
                     />
 
                     {gallery.length > 1 && (
@@ -228,10 +235,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                           }`}
                         >
                           <img
-                            src={img || "/placeholder-product.jpg"}
+                            src={proxiedImage(img)}
                             alt={`${product.name} miniatura ${index + 1}`}
                             className="h-20 w-16 object-cover"
-                            referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              e.currentTarget.src = "/placeholder-product.jpg";
+                            }}
                           />
                         </button>
                       ))}
