@@ -12,7 +12,7 @@ interface ProductModalProps {
 }
 
 function proxiedImage(url?: string) {
-  if (!url) return "/placeholder-product.jpg";
+  if (!url) return "/daphne-logo.png";
   return `/api/image?url=${encodeURIComponent(url)}`;
 }
 
@@ -30,7 +30,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     if (product.images && product.images.length > 0) {
       return product.images.slice(0, 5);
     }
-    return product.image ? [product.image] : ["/placeholder-product.jpg"];
+    return product.image ? [product.image] : ["/daphne-logo.png"];
   }, [product]);
 
   const availableColors = useMemo(() => product?.colors || [], [product]);
@@ -199,7 +199,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                       alt={`${product.name} ${currentImage + 1}`}
                       className="h-[420px] w-full object-cover sm:h-[520px] lg:h-[760px]"
                       onError={(e) => {
-                        e.currentTarget.src = "/placeholder-product.jpg";
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/daphne-logo.png";
                       }}
                     />
 
@@ -239,7 +240,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                             alt={`${product.name} miniatura ${index + 1}`}
                             className="h-20 w-16 object-cover"
                             onError={(e) => {
-                              e.currentTarget.src = "/placeholder-product.jpg";
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "/daphne-logo.png";
                             }}
                           />
                         </button>

@@ -1,18 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Product } from "../context/StoreContext";
 import ProductModal from "./ProductModal";
 
 function proxiedImage(url?: string) {
-  if (!url) return "/placeholder-product.jpg";
+  if (!url) return "/daphne-logo.png";
   return `/api/image?url=${encodeURIComponent(url)}`;
 }
 
 export default function ProductCard({ product }: { product: Product }) {
   const [open, setOpen] = useState(false);
 
-  const mainImage = proxiedImage(product.images?.[0] || product.image);
+  const mainImage = useMemo(() => {
+    return proxiedImage(product.images?.[0] || product.image);
+  }, [product.images, product.image]);
 
   return (
     <>
@@ -23,9 +25,9 @@ export default function ProductCard({ product }: { product: Product }) {
               src={mainImage}
               alt={product.name}
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              loading="lazy"
               onError={(e) => {
-                e.currentTarget.src = "/placeholder-product.jpg";
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/daphne-logo.png";
               }}
             />
 

@@ -117,7 +117,7 @@ export default function Home() {
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.dbId ?? product.id} product={product} />
             ))}
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function Home() {
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.dbId ?? product.id} product={product} />
             ))}
           </div>
 
