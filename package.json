@@ -2,16 +2,16 @@
   "name": "textile-brand",
   "version": "0.1.0",
   "private": true,
- "scripts": {
-  "dev": "next dev",
-  "build": "prisma generate && next build",
-  "start": "next start",
-  "lint": "eslint",
-  "db:generate": "prisma generate",
-  "db:migrate": "prisma migrate dev",
-  "db:seed": "prisma db seed",
-  "db:studio": "prisma studio"
-},
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
+  },
   "dependencies": {
     "@prisma/client": "^6.16.0",
     "framer-motion": "^12.35.2",
